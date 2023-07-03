@@ -1,12 +1,17 @@
-from typing import Annotated, Literal, TypeVar
-import numpy as np
-from numpy.typing import NDArray
+from nptyping import NDArray, Shape, UInt8, Bool, Float32
+from torchtyping import TensorType
 
 
-T = TypeVar("T", bound=np.generic)
+ArrayUintNx2 = NDArray[Shape["*, 2"], UInt8]
+ArrayUInt8NxN = NDArray[Shape["*, *"], UInt8]
+ArrayFloat32NxN = NDArray[Shape["*, *"], Float32]
+ArrayFloat32NxNx2 = NDArray[Shape["*, *, 2"], Float32]
+ArrayBoolNxN = NDArray[Shape["*, *"], Bool]
 
-Array4 = Annotated[NDArray[T], Literal[4]]
-ArrayNx2 = Annotated[NDArray[T], Literal["N", 2]]
-ArrayNxN = Annotated[NDArray[T], Literal["N", "N"]]
-ArrayNxNx1 = Annotated[NDArray[T], Literal["N", "N", 1]]
-ArrayNxNx2 = Annotated[NDArray[T], Literal["N", "N", 2]]
+
+TensorScalar = TensorType[float]
+TensorBoolN = TensorType["batch":1, "pixels":-1, bool]
+TensorFloatN = TensorType["batch":1, "pixels":-1, float]
+TensorFloatNx1 = TensorType["batch":1, "pixels":-1, "channels":1, float]
+TensorFloatNx2 = TensorType["batch":1, "pixels":-1, "channels":2, float]
+TensorFloatNxN = TensorType["batch":1, "height":-1, "width":-1, float]

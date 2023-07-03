@@ -12,8 +12,19 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "--experiment_name=testando",
-                "--batch_size=1000"
+                "--fit=laplacian", // gradients or laplacian
+                // "--derivatives_from_image=True",
+                "--num_epochs=20000",
+                "--epochs_until_summary=200",
+                "--experiment_name=fernando18",
+                "--learning_rate=3e-5",
+                "--image_size=256",
+                // "--original_image_name=camera.png",
+                "--laplacian_image_name=shaddowgraph_crop_flip.png",
+                // "--gradient_x_image_name=cropped_gradx.png",
+                // "--gradient_y_image_name=cropped_grady.png",
+                "--mask_image_name=cropped_maskAA.png",
+                "--transform_mean_option=image"
             ],
             "purpose": [
                 "debug-in-terminal"

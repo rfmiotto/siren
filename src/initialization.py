@@ -2,7 +2,9 @@ import numpy as np
 import torch
 
 
-def original_siren_initialization(weight, is_first=False, omega=1):
+def original_siren_initialization(
+    weight: torch.Tensor, is_first: bool = False, omega: float = 1
+):
     """Initialize the weigth of the Linear layer.
 
     Parameters

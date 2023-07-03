@@ -1,7 +1,9 @@
 import torch
 
+from src.my_types import TensorFloatN, TensorFloatNx1, TensorFloatNx2
 
-def gradient(target, coords):
+
+def gradient(target: TensorFloatN, coords: TensorFloatNx2) -> TensorFloatNx2:
     """Compute the gradient with respect to input.
 
     Parameters
@@ -23,7 +25,7 @@ def gradient(target, coords):
     return grad
 
 
-def divergence(grad, coords):
+def divergence(grad: TensorFloatNx2, coords: TensorFloatNx2) -> TensorFloatNx1:
     """Compute divergence.
 
     Parameters
@@ -45,13 +47,14 @@ def divergence(grad, coords):
     In a 2D case this will give us f_{xx} + f_{yy}.
     """
     div = 0.0
-    for i in range(coords.shape[1]):
+    num_dimensions = coords.shape[2]
+    for i in range(num_dimensions):
         div += gradient(grad[..., i], coords)[..., i : i + 1]
 
     return div
 
 
-def laplace(target, coords):
+def laplace(target: TensorFloatNx1, coords: TensorFloatNx2) -> TensorFloatNx1:
     """Compute laplace operator.
 
     Parameters

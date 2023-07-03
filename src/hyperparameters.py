@@ -12,13 +12,20 @@ class MyProgramArgs:
     config_filepath: any
     logging_root: str
     experiment_name: str
-    pass_entire_image: bool
-    batch_size: int
+    image_size: int
+    derivatives_from: str
+    fit: str
+    original_image_name: str
+    gradient_x_image_name: str
+    gradient_y_image_name: str
+    laplacian_image_name: str
+    mask_image_name: str
+    transform_mean_option: str
     learning_rate: float
     num_epochs: int
     num_workers: int
     epochs_until_checkpoint: int
-    steps_until_summary: int
+    epochs_until_summary: int
     load_checkpoint: bool
 
 
@@ -42,22 +49,60 @@ parser.add_argument(
     "will be saved.",
 )
 parser.add_argument(
-    "--pass_entire_image",
-    type=bool,
-    default=True,
-    help="Flag to pass the entire image (good speedup but consumes a lot of memory)"
-    "or batches of the image (slower, but allows to handle big images). default=True",
+    "--image_size",
+    type=int,
+    default=240,
+    help="Image size in pixels (image is squared: image_size x image_size). default=240",
+)
+parser.add_argument(
+    "--derivatives_from",
+    type=str,
+    choices=["images", "filters", "matfiles"],
+    default="images",
+    help="Method to read the derivatives. default=images",
+)
+parser.add_argument(
+    "--fit",
+    type=str,
+    choices=["gradients", "laplacian"],
+    default="gradients",
+    help="Whether training will fit the gradient or the laplacian. default='gradient'",
+)
+parser.add_argument(
+    "--original_image_name",
+    type=str,
+    help="Name of the original image",
+)
+parser.add_argument(
+    "--laplacian_image_name",
+    type=str,
+    help="Name of the image of the Laplacian",
+)
+parser.add_argument(
+    "--mask_image_name",
+    type=str,
+    help="Name of the image of the mask",
+)
+parser.add_argument(
+    "--gradient_x_image_name",
+    type=str,
+    help="Name of the image of the gradients in x",
+)
+parser.add_argument(
+    "--gradient_y_image_name",
+    type=str,
+    help="Name of the image of the gradients in y",
+)
+parser.add_argument(
+    "--transform_mean_option",
+    type=str,
+    choices=["image", "value", "self", "no_transform"],
+    default="no_transform",
+    help="How the mean will be evaluated. default='no_transform'",
 )
 
+
 # General training options
-parser.add_argument(
-    "--batch_size",
-    type=int,
-    default=1_000,
-    help="Make sure that the batch size is not greater than the total number of pixels"
-    "of the image. Also, when `--pass_entire_image=True`, the batch_size will be"
-    "set to 1. default=1_000",
-)
 parser.add_argument(
     "--learning_rate", type=float, default=1e-4, help="learning rate. default=1e-4"
 )
@@ -74,14 +119,14 @@ parser.add_argument(
 parser.add_argument(
     "--epochs_until_checkpoint",
     type=int,
-    default=25,
-    help="Time interval in seconds until checkpoint is saved. default=25",
+    default=1_000,
+    help="Number of epochs until checkpoint is saved. default=1,000",
 )
 parser.add_argument(
-    "--steps_until_summary",
+    "--epochs_until_summary",
     type=int,
-    default=1_000,
-    help="Time interval in seconds until tensorboard summary is saved. default=1,000",
+    default=200,
+    help="Number of epochs until tensorboard summary is saved. default=1,000",
 )
 parser.add_argument(
     "--load_checkpoint",
