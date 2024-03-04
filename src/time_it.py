@@ -14,7 +14,7 @@ def dhms_from_seconds(seconds):
     return days, hours, minutes, seconds
 
 
-def timeit(func):
+def time_it(func):
     @wraps(func)
     def timeit_wrapper(*args, **kwargs):
         start_time = datetime.now()

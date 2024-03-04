@@ -11,7 +11,7 @@ from src.early_stopping import EarlyStopping
 from src.transformations import get_transform_fn
 from src.running import Runner, run_epoch, TrainingConfig, TrainingMetrics
 from src.tensorboard_tracker import TensorboardTracker
-from src.timeit import timeit
+from time_it import time_it
 from src.hyperparameters import args
 from src.siren import SIREN
 from src.dtos import TrainingData
@@ -26,7 +26,7 @@ torch.manual_seed(42)
 torch.cuda.manual_seed_all(42)
 
 
-@timeit
+@time_it
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
