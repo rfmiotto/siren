@@ -230,25 +230,26 @@ def get_exporters() -> Exporters:
 
 
 def do_export(exporters: Exporters) -> TrainingData:
-    if args.derivatives_from == "filters":
-        derivatives = exporters["derivatives"].compute()
-        mask = exporters["mask"].compute()
-        representation = exporters["representation"].compute()
-        coordinates = exporters["coordinates"].compute()
-    elif args.derivatives_from == "images":
-        derivatives = exporters["derivatives"].from_image()
-        mask = exporters["mask"].from_image()
-        representation = exporters["representation"].from_image()
-        coordinates = exporters["coordinates"].from_image()
-    elif args.derivatives_from == "matfiles":
-        derivatives = exporters["derivatives"].from_mat_file()
-        mask = exporters["mask"].from_mat_file()
-        representation = exporters["representation"].from_mat_file()
-        coordinates = exporters["coordinates"].from_mat_file()
-    else:
-        raise ReferenceError(
-            "Unkown option to read data. Options are `filters`, `images` or `matfiles`"
-        )
+    match args.derivatives_from:
+        case "filters":
+            derivatives = exporters["derivatives"].compute()
+            mask = exporters["mask"].compute()
+            representation = exporters["representation"].compute()
+            coordinates = exporters["coordinates"].compute()
+        case "images":
+            derivatives = exporters["derivatives"].from_image()
+            mask = exporters["mask"].from_image()
+            representation = exporters["representation"].from_image()
+            coordinates = exporters["coordinates"].from_image()
+        case "matfiles":
+            derivatives = exporters["derivatives"].from_mat_file()
+            mask = exporters["mask"].from_mat_file()
+            representation = exporters["representation"].from_mat_file()
+            coordinates = exporters["coordinates"].from_mat_file()
+        case _:
+            raise ReferenceError(
+                "Unkown option to read data. Options are `filters`, `images` or `matfiles`"
+            )
 
     training_data = dict(derivatives)
     training_data.update(mask)

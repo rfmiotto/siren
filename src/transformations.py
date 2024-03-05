@@ -33,20 +33,19 @@ def get_transform_fn(
     # TODO   gradients, for example, we cannot specify separate values for x
     # TODO   and y components yet.
 
-    # TODO if upgrade to python 3.10, use structural pattern matching instead
-
-    if option == "image":
-        return shift_scale_img
-    elif option == "value":
-        return partial(shift_scale_value, mean=0.0)  # TODO user-defined mean
-    elif option == "self":
-        return shift_scale_self
-    elif option == "no_transform":
-        return no_transform
-    else:
-        raise ReferenceError(
-            "Option not found. Choose between 'image', 'value' or 'self'."
-        )
+    match option:
+        case "image":
+            return shift_scale_img
+        case "value":
+            return partial(shift_scale_value, mean=0.0)  # TODO user-defined mean
+        case "self":
+            return shift_scale_self
+        case "no_transform":
+            return no_transform
+        case _:
+            raise ReferenceError(
+                "Option not found. Choose between 'image', 'value' or 'self'."
+            )
 
 
 def no_transform(tensor: DerivativeTensor) -> DerivativeTensor:
