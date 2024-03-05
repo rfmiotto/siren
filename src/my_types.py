@@ -3,6 +3,7 @@ from torchtyping import TensorType
 
 ArrayUintNx2 = NDArray[Shape["*, 2"], UInt8]
 ArrayUInt8NxN = NDArray[Shape["*, *"], UInt8]
+ArrayFloat32Nx2 = NDArray[Shape["*, 2"], Float32]
 ArrayFloat32NxN = NDArray[Shape["*, *"], Float32]
 ArrayFloat32NxNx2 = NDArray[Shape["*, *, 2"], Float32]
 ArrayBoolNxN = NDArray[Shape["*, *"], Bool]

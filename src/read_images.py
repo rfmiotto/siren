@@ -9,11 +9,11 @@ from typing_extensions import NotRequired
 
 from src.dtos import TrainingData
 from src.hyperparameters import args
-from src.my_types import ArrayBoolNxN, ArrayFloat32NxN, ArrayUintNx2
+from src.my_types import ArrayBoolNxN, ArrayFloat32Nx2, ArrayFloat32NxN, ArrayUintNx2
 
 
 class ExporterReturn(TypedDict):
-    coordinates: NotRequired[ArrayFloat32NxN]
+    coordinates: NotRequired[ArrayFloat32Nx2]
     representation: NotRequired[ArrayFloat32NxN]
     gradient_x: NotRequired[ArrayFloat32NxN]
     gradient_y: NotRequired[ArrayFloat32NxN]

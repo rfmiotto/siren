@@ -4,6 +4,7 @@ from typing_extensions import NotRequired, Required
 
 from src.my_types import (
     ArrayBoolNxN,
+    ArrayFloat32Nx2,
     ArrayFloat32NxN,
     TensorBoolN,
     TensorFloatN,
@@ -19,7 +20,7 @@ class DatasetReturnItems(TypedDict):
 
 
 class TrainingData(TypedDict):
-    coordinates: Required[ArrayFloat32NxN]
+    coordinates: Required[ArrayFloat32Nx2]
     representation: NotRequired[ArrayFloat32NxN]
     laplacian: NotRequired[ArrayFloat32NxN]
     gradient_x: NotRequired[ArrayFloat32NxN]
