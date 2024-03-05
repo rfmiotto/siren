@@ -6,25 +6,28 @@
     "configurations": [
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
+            "env": {"PYTHONPATH":"${workspaceRoot}"},
             "args": [
-                "--fit=laplacian", // gradients or laplacian
-                // "--derivatives_from_image=True",
-                "--num_epochs=20000",
+                "--experiment_name=test",
+                "--fit=laplacian", // "gradients" or "laplacian"
+                "--derivatives_from=images", // "images", "filters" or "matfiles"
+                "--num_epochs=400",
                 "--epochs_until_summary=200",
-                "--experiment_name=fernando18",
                 "--learning_rate=3e-5",
                 "--image_size=256",
                 // "--original_image_name=camera.png",
+                // "--laplacian_image_name=filtered.mat",
                 "--laplacian_image_name=shaddowgraph_crop_flip.png",
+                // "--laplacian_image_name=filtered_image.png",
                 // "--gradient_x_image_name=cropped_gradx.png",
                 // "--gradient_y_image_name=cropped_grady.png",
-                "--mask_image_name=cropped_maskAA.png",
-                "--transform_mean_option=image"
+                // "--mask_image_name=cropped_mask.png",
+                "--transform_mean_option=no_transform" // "image", "value", "self", "no_transform"
             ],
             "purpose": [
                 "debug-in-terminal"

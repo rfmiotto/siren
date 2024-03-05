@@ -1,0 +1,7 @@
+subdirs:
+  win-64:
+    packages:
+      __cuda: 11.8
+  linux-64:
+    packages:
+      __cuda: 11.8
