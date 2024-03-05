@@ -15,6 +15,7 @@ class MyProgramArgs:
     image_size: int
     derivatives_from: str
     fit: str
+    coordinates_file_name: str
     original_image_name: str
     gradient_x_image_name: str
     gradient_y_image_name: str
@@ -67,6 +68,12 @@ parser.add_argument(
     choices=["gradients", "laplacian"],
     default="gradients",
     help="Whether training will fit the gradient or the laplacian. default='gradient'",
+)
+parser.add_argument(
+    "--coordinates_file_name",
+    type=str,
+    help="Name of the .mat file containing the coordinates."
+    "It must have `coords_x` and `coords_y` column headings",
 )
 parser.add_argument(
     "--original_image_name",

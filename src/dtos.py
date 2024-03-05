@@ -19,6 +19,7 @@ class DatasetReturnItems(TypedDict):
 
 
 class TrainingData(TypedDict):
+    coordinates: Required[ArrayFloat32NxN]
     representation: NotRequired[ArrayFloat32NxN]
     laplacian: NotRequired[ArrayFloat32NxN]
     gradient_x: NotRequired[ArrayFloat32NxN]

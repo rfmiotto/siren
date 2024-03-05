@@ -1,5 +1,5 @@
 import time
-
+from pathlib import Path
 from scipy.io import savemat
 import numpy as np
 import torch
@@ -40,6 +40,7 @@ class TensorboardTracker:
         batch_size = img.shape[0]
         image_size = int(np.sqrt(img.shape[1]))
         img_formatted = img.view(batch_size, image_size, image_size)
+        Path(f"outputs/{name}").mkdir(parents=True, exist_ok=True)
         savemat(f"outputs/{name}_{step}.mat", {"data": img_formatted.cpu()})
         if rescale:
             img_formatted = self._rescale_image(img_formatted)
