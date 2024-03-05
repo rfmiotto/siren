@@ -136,7 +136,7 @@ def add_true_images_into_tracker(
 ) -> None:
     filtered_imagery = filter_out_none(imagery)
     for name, image in filtered_imagery.items():
-        if name == "mask" or name == "coordinates":
+        if name in ("mask", "coordinates"):
             continue
         img = transform(Image.fromarray(image)).to(device=device)
         tracker.add_image(f"ground_truth/{name}", img.view(1, -1), step=None)
