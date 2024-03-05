@@ -1,8 +1,7 @@
+import cv2
 import matplotlib.pylab as plt
 import numpy as np
 from numpy.typing import NDArray
-import cv2
-
 
 PADDING = 0  # to avoid boundary effects with numerical derivatives
 IMG_SIZE = 256

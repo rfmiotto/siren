@@ -1,19 +1,17 @@
-from typing import Any, Tuple, TypedDict, Literal, Union
 from dataclasses import dataclass
+from typing import Any, Literal, Tuple, TypedDict, Union
+
 import torch
 from torch.utils.data.dataloader import DataLoader
-from torchmetrics import (
-    StructuralSimilarityIndexMeasure,
-    PeakSignalNoiseRatio,
-)
+from torchmetrics import PeakSignalNoiseRatio, StructuralSimilarityIndexMeasure
 
-from src.tracking import NetworkTracker
 from src.datasets import DatasetReturnItems
-from src.hyperparameters import args
-from src.losses import FitLaplacian, FitGradients
 from src.dtos import RunnerReturnItems
+from src.hyperparameters import args
+from src.losses import FitGradients, FitLaplacian
 from src.my_types import TensorFloatNx1, TensorFloatNx2
-from src.save_image import should_save_image, save_gradient_images, save_laplacian_image
+from src.save_image import save_gradient_images, save_laplacian_image, should_save_image
+from src.tracking import NetworkTracker
 
 
 class TrainingConfig(TypedDict):

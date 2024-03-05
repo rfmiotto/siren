@@ -1,23 +1,22 @@
 import numpy as np
 import torch
-from tqdm import tqdm
+import torchvision
 from PIL import Image
 from torch.utils.data.dataloader import DataLoader
-import torchvision
+from tqdm import tqdm
 
 from src.checkpoint import load_checkpoint, save_checkpoint
 from src.datasets import DerivativesPixelDataset
+from src.dtos import TrainingData
 from src.early_stopping import EarlyStopping
-from src.transformations import get_transform_fn
-from src.running import Runner, run_epoch, TrainingConfig, TrainingMetrics
+from src.hyperparameters import args
+from src.read_images import get_training_data
+from src.running import Runner, TrainingConfig, TrainingMetrics, run_epoch
+from src.siren import SIREN
 from src.tensorboard_tracker import TensorboardTracker
 from src.time_it import time_it
-from src.hyperparameters import args
-from src.siren import SIREN
-from src.dtos import TrainingData
 from src.tracking import NetworkTracker
-from src.read_images import get_training_data
-
+from src.transformations import get_transform_fn
 
 # torch.use_deterministic_algorithms(True)
 torch.backends.cudnn.deterministic = True

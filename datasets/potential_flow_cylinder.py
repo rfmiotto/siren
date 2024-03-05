@@ -1,12 +1,12 @@
 from dataclasses import dataclass
-from typing import Tuple, Optional
+from typing import Optional, Tuple
+
+import matplotlib.pylab as plt
 import numpy as np
 from numpy.typing import NDArray
-import matplotlib.pylab as plt
 
-from vector_ops import gradient_of_scalar
 from metrics import Metrics
-
+from vector_ops import gradient_of_scalar
 
 FREESTREAM_VEL_MAGNITUDE = 0.1
 

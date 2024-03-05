@@ -1,5 +1,5 @@
-from functools import wraps
 from datetime import datetime
+from functools import wraps
 
 
 def date_diff_in_seconds(dt2, dt1):

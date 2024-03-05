@@ -1,16 +1,17 @@
 from typing import List
+
 import numpy as np
 import torch
 from torch.utils.data import Dataset
 
+from src.dtos import DatasetReturnItems, TrainingData
 from src.my_types import (
-    ArrayFloat32NxN,
     ArrayBoolNxN,
+    ArrayFloat32NxN,
     TensorBoolN,
     TensorFloatNx1,
     TensorFloatNx2,
 )
-from src.dtos import TrainingData, DatasetReturnItems
 from src.transformations import Transform
 
 

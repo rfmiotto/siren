@@ -1,7 +1,6 @@
-from PIL import Image
 import numpy as np
+from PIL import Image
 from scipy.io import savemat
-
 
 image = Image.open("shaddowgraph_crop_flip.png")
 image = (np.array(image) / 255.0).astype(np.float32)

@@ -1,12 +1,13 @@
 import time
 from pathlib import Path
-from scipy.io import savemat
+
 import numpy as np
 import torch
+from scipy.io import savemat
 from torch.utils.tensorboard import SummaryWriter
 
-from src.validate_dir import validate_dir
 from src.my_types import TensorFloatN, TensorFloatNxN
+from src.validate_dir import validate_dir
 
 
 class TensorboardTracker:

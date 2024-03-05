@@ -1,14 +1,15 @@
 from typing import Protocol, TypedDict
-from typing_extensions import NotRequired
+
 import numpy as np
+import scipy
 from PIL import Image
 from PIL.Image import Image as ImageType
 from scipy.ndimage import laplace, sobel
-import scipy
+from typing_extensions import NotRequired
 
-from src.hyperparameters import args
 from src.dtos import TrainingData
-from src.my_types import ArrayFloat32NxN, ArrayBoolNxN, ArrayUintNx2
+from src.hyperparameters import args
+from src.my_types import ArrayBoolNxN, ArrayFloat32NxN, ArrayUintNx2
 
 
 class ExporterReturn(TypedDict):

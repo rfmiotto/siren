@@ -1,7 +1,7 @@
 import torch
-from src.vector_ops import gradient, laplace
-from src.my_types import TensorFloatNx1, TensorFloatNx2, TensorScalar
 
+from src.my_types import TensorFloatNx1, TensorFloatNx2, TensorScalar
+from src.vector_ops import gradient, laplace
 
 loss_fn = torch.nn.MSELoss()
 

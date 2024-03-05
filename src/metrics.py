@@ -1,7 +1,6 @@
-import torch
 import numpy as np
 import skimage
-
+import torch
 
 # FIXME TALVEZ POSSA DELETAR ESSE ARQUIVO INTEIRO
 

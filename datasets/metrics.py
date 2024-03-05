@@ -1,7 +1,8 @@
 # pylint: disable=invalid-name
 
-from typing import Literal
 from dataclasses import dataclass, field
+from typing import Literal
+
 import numpy as np
 from numpy.typing import NDArray
 

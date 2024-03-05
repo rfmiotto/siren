@@ -1,4 +1,5 @@
 from typing import Union
+
 import torch
 
 from src.dtos import RunnerReturnItems

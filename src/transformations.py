@@ -1,11 +1,11 @@
 from functools import partial
-from typing import Union, Literal, Callable
-from PIL import Image
+from typing import Callable, Literal, Union
+
 import numpy as np
 import torch
+from PIL import Image
 
 from src.my_types import TensorFloatNx1, TensorFloatNx2
-
 
 DerivativeTensor = Union[TensorFloatNx1, TensorFloatNx2]
 Transform = Callable[[DerivativeTensor], DerivativeTensor]

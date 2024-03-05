@@ -1,6 +1,5 @@
-from nptyping import NDArray, Shape, UInt8, Bool, Float32
+from nptyping import Bool, Float32, NDArray, Shape, UInt8
 from torchtyping import TensorType
-
 
 ArrayUintNx2 = NDArray[Shape["*, 2"], UInt8]
 ArrayUInt8NxN = NDArray[Shape["*, *"], UInt8]

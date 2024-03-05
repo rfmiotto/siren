@@ -1,8 +1,7 @@
-import numpy as np
-from scipy.io import loadmat
-from scipy import integrate
 import matplotlib.pyplot as plt
-
+import numpy as np
+from scipy import integrate
+from scipy.io import loadmat
 
 index = 128
 

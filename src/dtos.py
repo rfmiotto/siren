@@ -1,14 +1,14 @@
 from typing import TypedDict, Union
-from typing_extensions import Required, NotRequired
 
+from typing_extensions import NotRequired, Required
 
 from src.my_types import (
-    ArrayFloat32NxN,
     ArrayBoolNxN,
-    TensorFloatNx1,
-    TensorFloatNx2,
+    ArrayFloat32NxN,
     TensorBoolN,
     TensorFloatN,
+    TensorFloatNx1,
+    TensorFloatNx2,
 )
 
 
