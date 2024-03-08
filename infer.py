@@ -18,8 +18,8 @@ torch.cuda.manual_seed_all(42)
 
 
 def main():
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Running on {device}")
+    device = "cpu"
+    print(f"Running on {device} - CUDA, if available, was deactivated for this script")
 
     exporter = CoordinatesExporter()
 
@@ -35,8 +35,8 @@ def main():
                 "Unkown option to read data. Options are `filters`, `images` or `matfiles`"
             )
 
-    coordinates = process_coordinates(coordinates, device)
     coordinates_noisy = process_coordinates(add_noise(coordinates), device)
+    coordinates = process_coordinates(coordinates, device)
 
     model = SIREN()
     load_checkpoint(model=model, device=device)
