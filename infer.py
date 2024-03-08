@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+from scipy.ndimage import laplace
 
 from src.checkpoint import load_checkpoint
 from src.datasets import process_coordinates
@@ -59,6 +60,19 @@ def main():
     visualize_predictions(prediction, x, y, prediction_noisy, x_noisy, y_noisy)
 
     check_frequencies(model)
+
+    plot_laplacian_from_prediction(prediction)
+
+
+def plot_laplacian_from_prediction(prediction) -> None:
+    # ignore edges due to board effects
+    pad = 2
+    lapl = laplace(prediction)
+    vmax = lapl[pad:-pad, pad:-pad].max()
+    vmin = lapl[pad:-pad, pad:-pad].min()
+
+    plt.imshow(lapl, cmap="gray", vmax=vmax, vmin=vmin)
+    plt.show()
 
 
 def check_frequencies(model) -> None:
