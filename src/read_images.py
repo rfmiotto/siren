@@ -109,7 +109,7 @@ class MaskExporter:
 class RepresentationExporter:
     def from_mat_file(self) -> ExporterReturn:
         try:
-            representation = read_mat(args.mask_image_name)["representation"]
+            representation = read_mat(args.original_image_name)["representation"]
         except FileNotFoundError:
             representation = None
 
