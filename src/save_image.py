@@ -43,7 +43,7 @@ def retrieve_full_image(
     shape of the mask and place the variable where mask is False. Regions where
     mask is True will be filled with ones.
     """
-    full_size_variable = torch.ones_like(mask, dtype=torch.float).view(1, -1, 1)
+    full_size_variable = torch.ones_like(mask, dtype=torch.float).view(-1, 1)
     # fmt: off
     full_size_variable *= variable.detach().cpu().min() # make masked regions black
     # fmt: on

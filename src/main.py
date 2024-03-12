@@ -6,7 +6,7 @@ from torch.utils.data.dataloader import DataLoader
 from tqdm import tqdm
 
 from src.checkpoint import load_checkpoint, save_checkpoint
-from src.datasets import DerivativesPixelDataset
+from src.datasets import DerivativesPixelDataset, DerivativesPixelDatasetBatches
 from src.dtos import TrainingData
 from src.early_stopping import EarlyStopping
 from src.hyperparameters import args
@@ -33,16 +33,22 @@ def main():
 
     transform = get_transform_fn(args.transform_mean_option)
 
-    dataset = DerivativesPixelDataset(
-        images=training_data, transform=transform, device=device
-    )
+    if True:
+        dataset = DerivativesPixelDatasetBatches(
+            images=training_data, transform=transform, device=device
+        )
+    else:
+        dataset = DerivativesPixelDataset(
+            images=training_data, transform=transform, device=device
+        )
 
     dataloader = DataLoader(
         dataset,
-        batch_size=1,
-        shuffle=False,
+        batch_size=args.batch_size,
+        shuffle=True,
         num_workers=args.num_workers,
         pin_memory=False,
+        drop_last=False,
     )
 
     model = SIREN()
@@ -139,7 +145,7 @@ def add_true_images_into_tracker(
         if name in ("mask", "coordinates"):
             continue
         img = transform(Image.fromarray(image)).to(device=device)
-        tracker.add_image(f"ground_truth/{name}", img.view(1, -1), step=None)
+        tracker.add_image(f"ground_truth/{name}", img.view(-1), step=None)
 
 
 def filter_out_none(kwargs: dict):

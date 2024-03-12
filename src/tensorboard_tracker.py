@@ -30,19 +30,18 @@ class TensorboardTracker:
 
     @staticmethod
     def _rescale_image(img: TensorFloatNxN) -> TensorFloatN:
-        xmax = torch.max(img[:, 2:-2, 2:-2])
-        xmin = torch.min(img[:, 2:-2, 2:-2])
+        xmax = torch.max(img[2:-2, 2:-2])
+        xmin = torch.min(img[2:-2, 2:-2])
         img[img > xmax] = xmax
         img[img < xmin] = xmin
         img_rescaled = (img - xmin) / (xmax - xmin)
         return img_rescaled
 
     def add_image(self, name: str, img: TensorFloatN, step: int, rescale=True):
-        batch_size = img.shape[0]
-        image_size = int(np.sqrt(img.shape[1]))
-        img_formatted = img.view(batch_size, image_size, image_size)
+        image_size = int(np.sqrt(img.shape[0]))
+        img_formatted = img.view(image_size, image_size)
         Path(f"outputs/{name}").mkdir(parents=True, exist_ok=True)
         savemat(f"outputs/{name}_{step}.mat", {"data": img_formatted.cpu()})
         if rescale:
             img_formatted = self._rescale_image(img_formatted)
-        self._writer.add_image(name, img_formatted, global_step=step)
+        self._writer.add_image(name, img_formatted[None, :, :], global_step=step)

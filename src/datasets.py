@@ -5,6 +5,7 @@ import torch
 from torch.utils.data import Dataset
 
 from src.dtos import DatasetReturnItems, TrainingData
+from src.hyperparameters import args
 from src.my_types import (
     ArrayBoolNxN,
     ArrayFloat32Nx2,
@@ -50,7 +51,7 @@ class DerivativesPixelDataset(Dataset):
                 image=images["laplacian"],
                 transform=transform,
                 device=device,
-                scaling_factor=1e3,
+                scaling_factor=1e0,
             )
 
         elif has_gradients(images):
@@ -84,6 +85,25 @@ class DerivativesPixelDataset(Dataset):
             coords=self.coords_normalized.requires_grad_(True),
             derivatives=self.derivatives,
             mask=self.mask,
+        )
+
+
+class DerivativesPixelDatasetBatches(DerivativesPixelDataset):
+    """Dataset extending parent class to train using batches instead of the
+    entire image.
+    """
+
+    def __len__(self):
+        """It is the image itself"""
+        return args.image_size**2  # Valid only for squared images
+
+    def __getitem__(self, idx: int) -> DatasetReturnItems:
+        """Get all relevant data for a single coordinate."""
+
+        return DatasetReturnItems(
+            coords=self.coords_normalized[idx].requires_grad_(True),
+            derivatives=self.derivatives[idx],
+            mask=self.mask[idx],
         )
 
 

@@ -25,6 +25,7 @@ class MyProgramArgs:
     transform_mean_option: str
     learning_rate: float
     num_epochs: int
+    batch_size: int
     num_workers: int
     epochs_until_checkpoint: int
     epochs_until_summary: int
@@ -119,6 +120,13 @@ parser.add_argument(
     type=int,
     default=10_000,
     help="Number of epochs to train for. default=10,000",
+)
+parser.add_argument(
+    "--batch_size",
+    type=int,
+    default=None,
+    help="Make sure that the batch size is not greater than the total number of pixels"
+    "of the image. default=None",
 )
 parser.add_argument(
     "--num_workers", type=int, default=0, help="Number of workers. default=0"

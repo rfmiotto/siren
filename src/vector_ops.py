@@ -47,7 +47,7 @@ def divergence(grad: TensorFloatNx2, coords: TensorFloatNx2) -> TensorFloatNx1:
     In a 2D case this will give us f_{xx} + f_{yy}.
     """
     div = 0.0
-    num_dimensions = coords.shape[2]
+    num_dimensions = coords.shape[1]
     for i in range(num_dimensions):
         div += gradient(grad[..., i], coords)[..., i : i + 1]
 
