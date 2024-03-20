@@ -2,7 +2,10 @@ import numpy as np
 import skimage
 import torch
 
-# FIXME TALVEZ POSSA DELETAR ESSE ARQUIVO INTEIRO
+
+def relative_residual_error(preds: torch.Tensor, target: torch.Tensor):
+    # pylint: disable=not-callable
+    return torch.linalg.norm(target - preds) / torch.linalg.norm(target)
 
 
 def peak_signal_noise_ratio(preds: torch.Tensor, target: torch.Tensor):

@@ -9,6 +9,7 @@ from src.datasets import DatasetReturnItems
 from src.dtos import RunnerReturnItems
 from src.hyperparameters import args
 from src.losses import FitGradients, FitLaplacian
+from src.metrics import relative_residual_error
 from src.my_types import TensorFloatNx1, TensorFloatNx2
 from src.save_image import save_gradient_images, save_laplacian_image, should_save_image
 from src.tracking import NetworkTracker
@@ -120,7 +121,7 @@ class Runner:
         epoch_loss = epoch_loss / num_batches
         # epoch_psnr = self.psnr_metric.compute()
         # epoch_ssim = self.ssim_metric.compute()
-        epoch_psnr = epoch_loss  # FIXME
+        epoch_psnr = relative_residual_error(predictions, targets)  # FIXME
         epoch_ssim = epoch_loss  # FIXME
 
         self.psnr_metric.reset()
