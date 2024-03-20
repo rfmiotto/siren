@@ -50,7 +50,7 @@ class DerivativesPixelDataset(Dataset):
                 image=images["laplacian"],
                 transform=transform,
                 device=device,
-                scaling_factor=1e3,
+                scaling_factor=1e0,
             )
 
         elif has_gradients(images):
