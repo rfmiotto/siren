@@ -51,7 +51,7 @@ def main():
 
     early_stopping = EarlyStopping(patience=1000)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, patience=300, factor=0.5, verbose=True, min_lr=1e-7
+        optimizer, patience=2000, factor=0.5, verbose=True, min_lr=1e-7
     )
 
     config: TrainingConfig
