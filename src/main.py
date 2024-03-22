@@ -49,9 +49,9 @@ def main():
 
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
 
-    early_stopping = EarlyStopping(patience=1000)
+    early_stopping = EarlyStopping(patience=5000)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, patience=2000, factor=0.5, verbose=True, min_lr=1e-7
+        optimizer, patience=1000, factor=0.5, verbose=True, min_lr=1e-7
     )
 
     config: TrainingConfig
