@@ -29,6 +29,7 @@ class MyProgramArgs:
     epochs_until_checkpoint: int
     epochs_until_summary: int
     load_checkpoint: bool
+    checkpoint_file_name: str
 
 
 parser = configargparse.ArgumentParser()
@@ -142,6 +143,13 @@ parser.add_argument(
     default=False,
     help="Load checkpoint to continue training from a given point or make inference."
     "default=False",
+)
+parser.add_argument(
+    "--checkpoint_file_name",
+    type=str,
+    default="my_checkpoint.pth.tar",
+    help="Name of checkpoint file to continue training or make inference."
+    "default=my_checkpoint.pth.tar",
 )
 
 args = MyProgramArgs(**vars(parser.parse_args()))
