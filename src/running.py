@@ -3,13 +3,13 @@ from typing import Any, Literal, Tuple, TypedDict, Union
 
 import torch
 from torch.utils.data.dataloader import DataLoader
-from torchmetrics import PeakSignalNoiseRatio, StructuralSimilarityIndexMeasure
+from torchmetrics import PeakSignalNoiseRatio
 
 from src.datasets import DatasetReturnItems
 from src.dtos import RunnerReturnItems
 from src.hyperparameters import args
 from src.losses import FitGradients, FitLaplacian
-from src.metrics import relative_residual_error
+from src.metrics import RelativeResidualError
 from src.my_types import TensorFloatNx1, TensorFloatNx2
 from src.save_image import save_gradient_images, save_laplacian_image, should_save_image
 from src.tracking import NetworkTracker
@@ -27,7 +27,7 @@ class TrainingConfig(TypedDict):
 @dataclass
 class TrainingMetrics:
     psnr_metric = PeakSignalNoiseRatio()
-    ssim_metric = StructuralSimilarityIndexMeasure()
+    rre_metric = RelativeResidualError()
 
 
 class Runner:
@@ -52,7 +52,7 @@ class Runner:
         # Send to device
         self.model = self.model.to(device=self.device)
         self.psnr_metric = metrics.psnr_metric.to(device=self.device)
-        self.ssim_metric = metrics.ssim_metric.to(device=self.device)
+        self.rre_metric = metrics.rre_metric.to(device=self.device)
         self.loss_fn = self.loss_fn.to(device=self.device)
 
     def _forward(
@@ -113,26 +113,24 @@ class Runner:
 
             loss, predictions, derivatives = self._run_batch(inputs, targets)
 
-            # psnr = self.psnr_metric.forward(inputs, derivatives)
-            # ssim = self.ssim_metric.forward(inputs, derivatives)
+            self.psnr_metric.forward(targets, derivatives)
+            self.rre_metric.forward(targets, derivatives)
 
             epoch_loss += loss.item()
 
         epoch_loss = epoch_loss / num_batches
-        # epoch_psnr = self.psnr_metric.compute()
-        # epoch_ssim = self.ssim_metric.compute()
-        epoch_psnr = relative_residual_error(predictions, targets)  # FIXME
-        epoch_ssim = epoch_loss  # FIXME
+        epoch_psnr = self.psnr_metric.compute()
+        epoch_rre = self.rre_metric.compute()
 
         self.psnr_metric.reset()
-        self.ssim_metric.reset()
+        self.rre_metric.reset()
 
         self.epoch += 1
 
         return RunnerReturnItems(
             epoch_loss=epoch_loss,
             epoch_psnr=epoch_psnr,
-            epoch_ssim=epoch_ssim,
+            epoch_rre=epoch_rre,
             predictions=predictions,
             derivatives=derivatives,
             mask=mask,
@@ -144,7 +142,7 @@ def run_epoch(runner: Runner, tracker: NetworkTracker) -> Tuple[float, float, fl
 
     tracker.add_epoch_metric("loss", results["epoch_loss"], runner.epoch)
     tracker.add_epoch_metric("psnr", results["epoch_psnr"], runner.epoch)
-    tracker.add_epoch_metric("ssim", results["epoch_ssim"], runner.epoch)
+    tracker.add_epoch_metric("rre", results["epoch_rre"], runner.epoch)
 
     if should_save_image(runner.epoch, args.epochs_until_summary):
         if args.fit == "gradients":
@@ -152,4 +150,4 @@ def run_epoch(runner: Runner, tracker: NetworkTracker) -> Tuple[float, float, fl
         else:
             save_laplacian_image(tracker, results, runner.epoch)
 
-    return results["epoch_loss"], results["epoch_psnr"], results["epoch_ssim"]
+    return results["epoch_loss"], results["epoch_psnr"], results["epoch_rre"]

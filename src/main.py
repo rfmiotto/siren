@@ -91,13 +91,13 @@ def main():
     )
 
     for epoch in range(args.num_epochs):  # pylint: disable=unused-variable
-        epoch_loss, epoch_psnr, epoch_ssim = run_epoch(
+        epoch_loss, epoch_psnr, epoch_rre = run_epoch(
             runner=runner,
             tracker=tracker,
         )
 
         scheduler.step(epoch_loss)
-        early_stopping(epoch_ssim)
+        early_stopping(epoch_loss)
         if early_stopping.stop:
             print("Ealy stopping")
             break
@@ -105,25 +105,25 @@ def main():
         # Flush tracker after every epoch for live updates
         tracker.flush()
 
-        if should_save_model(runner.epoch, best_acc, epoch_ssim):
-            best_acc = epoch_ssim
+        if should_save_model(runner.epoch, best_acc, epoch_rre):
+            best_acc = epoch_loss
             save_checkpoint(runner.model, optimizer, runner.epoch, epoch_loss, best_acc)
             print(
-                f"Best penr: {epoch_psnr} \t Best ssim: {epoch_ssim} \t Best loss: {epoch_loss}"
+                f"Best penr: {epoch_psnr} \t Best rre: {epoch_rre} \t Best loss: {epoch_loss}"
             )
 
         progress_bar.update(1)
         progress_bar.set_postfix(
             loss=f"{epoch_loss:.5f}",
             psnr=f"{epoch_psnr:.5f}",
-            ssim=f"{epoch_ssim:.5f}",
+            rre=f"{epoch_rre:.5f}",
         )
 
     progress_bar.close()
 
 
-def should_save_model(epoch: int, best_acc: float, epoch_ssim: float) -> bool:
-    if (epoch > 1000) and (epoch % 200 == 0) and (best_acc > epoch_ssim):
+def should_save_model(epoch: int, best_acc: float, epoch_rre: float) -> bool:
+    if (epoch > 1000) and (epoch % 200 == 0) and (best_acc > epoch_rre):
         return True
     return False
 
