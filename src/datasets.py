@@ -58,7 +58,7 @@ class DerivativesPixelDataset(Dataset):
                 images=[images["gradient_x"], images["gradient_y"]],
                 transform=transform,
                 device=device,
-                scaling_factor=1e1,
+                scaling_factor=1e0,
             )
         else:
             raise ReferenceError(
