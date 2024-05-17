@@ -1,5 +1,6 @@
+import re
 import time
-from pathlib import Path
+from pathlib import Path, PurePath
 
 import numpy as np
 import torch
@@ -41,8 +42,15 @@ class TensorboardTracker:
         batch_size = img.shape[0]
         image_size = int(np.sqrt(img.shape[1]))
         img_formatted = img.view(batch_size, image_size, image_size)
-        Path(f"outputs/{name}").mkdir(parents=True, exist_ok=True)
-        savemat(f"outputs/{name}_{step}.mat", {"data": img_formatted.cpu()})
+
+        subdirectories = re.split("/", name)[:-1]
+        filename = re.split("/", name)[-1]
+        filename += f"_{step}.mat"
+        path = PurePath("outputs", *subdirectories)
+        Path(path).mkdir(parents=True, exist_ok=True)
+        full_path_outfile = PurePath(path, filename)
+        savemat(full_path_outfile, {"data": img_formatted.cpu()})
+
         if rescale:
             img_formatted = self._rescale_image(img_formatted)
         self._writer.add_image(name, img_formatted, global_step=step)
