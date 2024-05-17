@@ -21,7 +21,7 @@ def save_gradient_images(tracker, results: RunnerReturnItems, epoch) -> None:
     )
 
     vis_data = retrieve_full_image(results["mask"], results["predictions"])
-    tracker.add_image("preds", vis_data, epoch)
+    tracker.add_image("preds/representation", vis_data, epoch)
 
     vis_data = retrieve_full_image(results["mask"], gradx.view(1, -1, 1))
     tracker.add_image("preds/gradx", vis_data, epoch)

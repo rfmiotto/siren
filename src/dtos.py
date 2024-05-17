@@ -32,6 +32,7 @@ class RunnerReturnItems(TypedDict):
     epoch_loss: float
     epoch_psnr: float
     epoch_ssim: float
+    epoch_mae: float
     predictions: TensorFloatN
     grads: Union[TensorFloatNx1, TensorFloatNx2]
     mask: TensorFloatN

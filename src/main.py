@@ -91,7 +91,7 @@ def main():
     )
 
     for epoch in range(args.num_epochs):  # pylint: disable=unused-variable
-        epoch_loss, epoch_psnr, epoch_rre = run_epoch(
+        epoch_loss, epoch_psnr, epoch_rre, epoch_mae = run_epoch(
             runner=runner,
             tracker=tracker,
         )
@@ -117,6 +117,7 @@ def main():
             loss=f"{epoch_loss:.5f}",
             psnr=f"{epoch_psnr:.5f}",
             rre=f"{epoch_rre:.5f}",
+            mae=f"{epoch_mae:.5f}",
         )
 
     progress_bar.close()

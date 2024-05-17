@@ -3,7 +3,7 @@ from typing import Any, Literal, Tuple, TypedDict, Union
 
 import torch
 from torch.utils.data.dataloader import DataLoader
-from torchmetrics import PeakSignalNoiseRatio
+from torchmetrics import MeanAbsoluteError, PeakSignalNoiseRatio
 
 from src.datasets import DatasetReturnItems
 from src.dtos import RunnerReturnItems
@@ -28,6 +28,7 @@ class TrainingConfig(TypedDict):
 class TrainingMetrics:
     psnr_metric = PeakSignalNoiseRatio()
     rre_metric = RelativeResidualError()
+    mae_metric = MeanAbsoluteError()
 
 
 class Runner:
@@ -53,6 +54,7 @@ class Runner:
         self.model = self.model.to(device=self.device)
         self.psnr_metric = metrics.psnr_metric.to(device=self.device)
         self.rre_metric = metrics.rre_metric.to(device=self.device)
+        self.mae_metric = metrics.mae_metric.to(device=self.device)
         self.loss_fn = self.loss_fn.to(device=self.device)
 
     def _forward(
@@ -115,15 +117,18 @@ class Runner:
 
             self.psnr_metric.forward(targets, derivatives)
             self.rre_metric.forward(targets, derivatives)
+            self.mae_metric.forward(targets, derivatives)
 
             epoch_loss += loss.item()
 
         epoch_loss = epoch_loss / num_batches
         epoch_psnr = self.psnr_metric.compute()
         epoch_rre = self.rre_metric.compute()
+        epoch_mae = self.mae_metric.compute()
 
         self.psnr_metric.reset()
         self.rre_metric.reset()
+        self.mae_metric.reset()
 
         self.epoch += 1
 
@@ -131,6 +136,7 @@ class Runner:
             epoch_loss=epoch_loss,
             epoch_psnr=epoch_psnr,
             epoch_rre=epoch_rre,
+            epoch_mae=epoch_mae,
             predictions=predictions,
             derivatives=derivatives,
             mask=mask,
@@ -143,6 +149,7 @@ def run_epoch(runner: Runner, tracker: NetworkTracker) -> Tuple[float, float, fl
     tracker.add_epoch_metric("loss", results["epoch_loss"], runner.epoch)
     tracker.add_epoch_metric("psnr", results["epoch_psnr"], runner.epoch)
     tracker.add_epoch_metric("rre", results["epoch_rre"], runner.epoch)
+    tracker.add_epoch_metric("mae", results["epoch_mae"], runner.epoch)
 
     if should_save_image(runner.epoch, args.epochs_until_summary):
         if args.fit == "gradients":
@@ -150,4 +157,9 @@ def run_epoch(runner: Runner, tracker: NetworkTracker) -> Tuple[float, float, fl
         else:
             save_laplacian_image(tracker, results, runner.epoch)
 
-    return results["epoch_loss"], results["epoch_psnr"], results["epoch_rre"]
+    return (
+        results["epoch_loss"],
+        results["epoch_psnr"],
+        results["epoch_rre"],
+        results["epoch_mae"],
+    )
