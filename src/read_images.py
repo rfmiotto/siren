@@ -110,7 +110,7 @@ class RepresentationExporter:
     def from_mat_file(self) -> ExporterReturn:
         try:
             representation = read_mat(args.original_image_name)["representation"]
-        except FileNotFoundError:
+        except (FileNotFoundError, KeyError):
             representation = None
 
         return {
