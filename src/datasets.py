@@ -120,7 +120,10 @@ def process_gradient_images(
 ) -> TensorFloatNx2:
     gradients = np.stack([images[0], images[1]], axis=-1)
     gradients = (
-        torch.from_numpy(gradients).to(device=device, dtype=torch.float).view(-1, 2)
+        torch.from_numpy(gradients)
+        .to(device=device, dtype=torch.float)
+        .contiguous()
+        .view(-1, 2)
     )
     gradients = transform(gradients)
     gradients *= scaling_factor
